@@ -1,6 +1,6 @@
 {
   "name": "@onivoro/server-git",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "dependencies": {
     "@nestjs/common": "^7.6.12",
     "@onivoro/server-process": "^0.46.0"
