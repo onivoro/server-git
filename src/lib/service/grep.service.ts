@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common/';
 import { execPromise, spawnPromise } from '@onivoro/server-process';
-import { spawn } from "child_process";
 
 @Injectable()
 export class GrepService {
