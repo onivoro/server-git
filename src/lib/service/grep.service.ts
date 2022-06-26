@@ -12,7 +12,7 @@ export class GrepService {
     }
 
     async grep(find: string, cwd: string, _: string[] = [], flagObject: {w?: boolean, i?: boolean, n?: boolean, v?: boolean }= {w: false, i: false, n: false, v: false}, nameOnly = true) {        
-        const flagKeys = Object.keys(flagObject);
+        const flagKeys = Object.keys(flagObject || {});
         const fs = flagKeys
             .filter(flagKey => flagObject[flagKey])
 
