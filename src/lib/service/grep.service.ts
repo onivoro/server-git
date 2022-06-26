@@ -11,16 +11,16 @@ export class GrepService {
             .then(r => r.split('\n').filter(l => !!l))
     }
 
-    async grep(find: string, cwd: string, _: string[] = [], flagObject: {w: boolean, i: boolean} = {w: false, i: false}) {        
+    async grep(find: string, cwd: string, _: string[] = [], flagObject: {w?: boolean, i?: boolean, n?: boolean, v?: boolean }= {w: false, i: false, n: false, v: false}, nameOnly = true) {        
         const flagKeys = Object.keys(flagObject);
         const fs = flagKeys
             .filter(flagKey => flagObject[flagKey])
 
         const flags = fs.length ? ` -${fs.join(' -')}` : '';
 
-        let findFilesCmd = `git grep --name-only ${flags} -F`;
+        let findFilesCmd = `grep ${nameOnly ? '--name-only ' : ''}${flags} -F`;
 
-        const args = [...findFilesCmd.split(' ').slice(1), find, '--', ...(_ || [])].filter(Boolean);
+        const args = [...findFilesCmd.split(' '), this.sanitize(find), '--', ...(_ || [])].filter(Boolean);
 
         try {
             const stdout = await spawnPromise('git', args, { encoding: 'utf-8', cwd });
@@ -33,4 +33,10 @@ export class GrepService {
             throw stderr;
         }
     }
+
+    private sanitize(payload: string): string {
+        return payload
+          .replace(/\(/g, '\\(')
+          .replace(/\)/g, '\\)')
+      }
 }
